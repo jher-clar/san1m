@@ -6,38 +6,13 @@
     <title>Jhermaine's Poems Library</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
+
     <style>
         .hidden {
             display: none;
         }
 
-        /* Keeping other specific styles here for completeness as they were in your original */
-        .poem-card-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            /* Add more styling as needed */
-        }
-
-        .carousel {
-            display: flex;
-            overflow-x: auto;
-            gap: 15px;
-            padding-bottom: 15px;
-        }
-
-        .poem-card {
-            border: 1px solid #ddd;
-            padding: 10px;
-            min-width: 250px; /* Give cards a minimum width */
-            flex-shrink: 0; /* Prevent cards from shrinking below min-width */
-        }
-        
-        /* Added basic styling for #topPoems cards if needed to differentiate */
-        #topPoems .poem-card {
-             /* Specific styles for top poems if desired */
-        }
-
-         /* Basic styling for the score dialog */
+        /* Basic styling for the score dialog */
         .score-dialog-overlay {
             position: fixed;
             top: 0;
@@ -78,8 +53,6 @@
             text-align: left;
             white-space: pre-wrap; /* Preserve line breaks from breakdown */
         }
-
-
     </style>
 </head>
 <body>
@@ -136,8 +109,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.2.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder@1.3.3"></script>
     <script src="https://unpkg.com/compromise"></script>
-    <script src="https://unpkg.com/touch-events@1.0.4/dist/touch-events.umd.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuidv4.min.js"></script> <script src="poem-scoring.js"></script> <script src="hana-bot.js"></script>     <script src="poem-manager.js"></script>  <script>
-        // Function to show/hide sections - could be in a separate UI script
+    <script src="https://unpkg.com/touch-events@1.0.4/dist/touch-events.umd.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuidv4.min.js"></script> <script src="poem-scoring.js"></script> <script src="hana-bot.js"></script>     <script src="poem-manager.js"></script>  <script>
+        // Function to show/hide sections
         function showSection(id) {
             const sections = document.querySelectorAll(".section");
             sections.forEach(s => s.classList.add('hidden'));
@@ -146,7 +119,7 @@
                  activeSection.classList.remove('hidden');
             } else {
                 console.error(`Section with id "${id}" not found.`);
-                // Optionally redirect to home or show an error message
+                // Fallback to showing home section if target is invalid
                 const homeSection = document.getElementById('home');
                 if(homeSection) homeSection.classList.remove('hidden');
             }
@@ -154,7 +127,7 @@
 
         // Initial setup on DOM ready
         document.addEventListener('DOMContentLoaded', () => {
-            // Handle navigation clicks using event listeners
+            // Handle navigation clicks using event listeners attached to data-section links
             document.querySelectorAll('nav a[data-section]').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault(); // Prevent default link behavior
@@ -167,7 +140,7 @@
              showSection('home');
 
             // Call initial setup functions from poem-manager.js and hana-bot.js
-            // Ensure these functions are globally accessible (e.g., attached to `window`)
+            // Ensure these functions are globally accessible (e.g., attached to `window` or returned by modules)
             if (typeof loadPoems === 'function') {
                  loadPoems(); // Load poems when the DOM is ready
             } else {
@@ -180,10 +153,8 @@
                  console.error("setupPoemForm function not found. Check poem-manager.js loading and scope.");
             }
 
-             // If hana-bot.js needs initial setup (e.g., positioning, initial message), call it here
-             // Assuming hana-bot.js handles its own DOMContentLoaded listener for finding elements
-             // If it has a global init function like setupHanaBot, call it:
-             // if (typeof setupHanaBot === 'function') { setupHanaBot(); }
+             // If hana-bot.js needs initial setup, call its init function here if it has one
+             // Example: if (typeof setupHanaBot === 'function') { setupHanaBot(); }
         });
     </script>
 </body>
