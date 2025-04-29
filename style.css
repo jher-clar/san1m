@@ -764,10 +764,13 @@ body::after {
 }
 /* Added/Modified styles for cute poem cards */
 .poem-card {
-    border: 1px solid #ffccdd; /* Softer, light pink border */
+    /* Removed the previous border style */
+    /* border: 5px double #ffb6c1; */
+
+    border: 2px dashed #ffb6c1; /* Added a dashed pastel pink border */
     padding: 20px; /* Increased padding */
     margin: 10px; /* Add some margin around cards */
-    border-radius: 15px; /* More rounded corners */
+    border-radius: 15px; /* More rounded corners (already there) */
     background-color: #fff0f5; /* Light pastel pink background */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
     min-width: 280px; /* Slightly increased min-width for better readability */
