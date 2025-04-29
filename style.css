@@ -762,3 +762,54 @@ body::after {
     0%, 100% { opacity: 0; transform: scale(0.5); }
     50% { opacity: 1; transform: scale(1); }
 }
+/* Added/Modified styles for cute poem cards */
+.poem-card {
+    border: 1px solid #ffccdd; /* Softer, light pink border */
+    padding: 20px; /* Increased padding */
+    margin: 10px; /* Add some margin around cards */
+    border-radius: 15px; /* More rounded corners */
+    background-color: #fff0f5; /* Light pastel pink background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    min-width: 280px; /* Slightly increased min-width for better readability */
+    flex-shrink: 0; /* Ensure cards don't shrink */
+    overflow: hidden; /* Hide overflowing content */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth hover effect */
+}
+
+.poem-card h3 {
+    color: #e75480; /* A nice pink color for titles */
+    font-family: 'Fredoka One', cursive; /* Use the cute font for titles */
+    margin-top: 0;
+    margin-bottom: 10px; /* Space below the title */
+}
+
+.poem-card p {
+    color: #555; /* Softer text color */
+    font-family: 'Quicksand', sans-serif; /* Use the body font */
+    line-height: 1.6; /* Improve readability with more line spacing */
+    margin-bottom: 10px; /* Space below poem content */
+}
+
+.poem-card em {
+    display: block; /* Ensure author is on its own line */
+    text-align: right; /* Align author to the right */
+    color: #777; /* Even softer color for author */
+    font-size: 0.9em; /* Slightly smaller font size for author */
+    margin-top: 15px; /* Space above the author */
+}
+
+/* Optional: Add a subtle hover effect */
+.poem-card:hover {
+    transform: translateY(-5px); /* Lift card slightly */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+/* Ensure the carousel container styles support the flex items */
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px; /* Increase gap between cards */
+    padding: 15px; /* Add padding around the carousel */
+    scroll-padding-right: 15px; /* Improve scroll snapping appearance */
+    /* You might add scroll-behavior: smooth; if you add navigation buttons */
+}
