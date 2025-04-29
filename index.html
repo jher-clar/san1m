@@ -6,56 +6,114 @@
     <title>Jhermaine's Poems Library</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
-    <!-- CSS goes in the head -->
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        /* Keeping other specific styles here for completeness as they were in your original */
+        .poem-card-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            /* Add more styling as needed */
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 15px;
+        }
+
+        .poem-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            min-width: 250px; /* Give cards a minimum width */
+            flex-shrink: 0; /* Prevent cards from shrinking below min-width */
+        }
+        
+        /* Added basic styling for #topPoems cards if needed to differentiate */
+        #topPoems .poem-card {
+             /* Specific styles for top poems if desired */
+        }
+
+         /* Basic styling for the score dialog */
+        .score-dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+        }
+
+        .score-dialog-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .score-dialog-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+            border: none;
+            background: none;
+        }
+
+        .score-dialog-content h3 {
+            margin-top: 0;
+        }
+         .score-dialog-content p {
+            text-align: left;
+            white-space: pre-wrap; /* Preserve line breaks from breakdown */
+        }
+
+
+    </style>
 </head>
 <body>
     <header>Jhermaine's Poems Library</header>
 
     <nav>
-        <!-- Using onclick for navigation, consider moving to JS -->
-        <a href="#" onclick="showSection('home')">Home</a>
-        <a href="#" onclick="showSection('submit')">Submit</a>
-        <a href="#" onclick="showSection('about')">About Hana</a>
+        <a href="#" data-section="home">Home</a>
+        <a href="#" data-section="submit">Submit</a>
+        <a href="#" data-section="about">About Hana</a>
     </nav>
 
-    <main> <!-- Use <main> for the main content -->
-        <!-- Home Section -->
-        <section class="section" id="home">
+    <main> <section class="section" id="home">
             <div class="hero">
                 <h2>Welcome to a magical world of poems!</h2>
                 <p>Write with joy, rhyme with love, and let Hana help you bloom! 🌸</p>
             </div>
-            <div class="carousel" id="poemList">
-                <!-- Poems will be loaded here -->
-            </div>
-            <!-- Moved Top Poems outside the first carousel div -->
-            <div id="topPoems"> <!-- Consider making this a separate section or clearly distinguish its purpose -->
-                 <h2>🏆 Top Poems</h2>
-                <!-- Top poems will be loaded here -->
-            </div>
+            <div id="topPoems"> <h2>🏆 Top Poems</h2>
+                 </div>
         </section>
 
-        <!-- Submit Section -->
-        <!-- Use a CSS class for display: none instead of inline style -->
         <section class="section hidden" id="submit">
             <div class="form-container">
                 <h2>Submit Your Poem ✨</h2>
                 <p>Write your poem below and let Hana read it! She'll rate it with sparkles and smiles 💫</p>
                 <form id="poemForm">
-                    <input type="text" id="poemTitle" placeholder="Poem Title" required /><br />
+                    <input type="text" id="title" placeholder="Poem Title" required /><br />
                     <input type="text" id="author" placeholder="Your Name" required /><br />
                     <textarea id="poem" rows="8" placeholder="Type your lovely poem here..." required></textarea><br />
                     <button type="submit" class="submit-btn">Submit to Hana 💌</button>
                 </form>
                 <p class="result-message" id="resultMsg">(Hana will appear here and rate your poem!)</p>
-                <!-- Add a container for the poem score dialog if not appending to body -->
-                <!-- <div id="scoreContainer"></div> -->
-                 <!-- The showPoemScore function currently appends to body, which is fine -->
             </div>
         </section>
 
-        <!-- About Hana Section -->
-         <!-- Use a CSS class for display: none instead of inline style -->
         <section class="section hidden" id="about">
             <div class="about">
                 <h2>About Hana 🧁</h2>
@@ -67,96 +125,66 @@
                 </p>
             </div>
         </section>
-    </main> <!-- End main -->
-
-    <div class="hana-bubble" id="hanaBubble">
-        <!-- Removed inline onclick="showSection('submit')" - handle click in JS -->
-        <img src="avatar.png" alt="Hana the AI poetry assistant" class="hana-avatar"> <!-- Improved alt text -->
-        <div class="hana-text" id="hanaText">Hiya! I'm Hana! 💖 Wanna write a poem with me?</div>
+    </main> <div class="hana-bubble" id="hanaBubble">
+        <img src="avatar.png" alt="Hana the AI poetry assistant" class="hana-avatar"> <div class="hana-text" id="hanaText">Hiya! I'm Hana! 💖 Wanna write a poem with me?</div>
     </div>
 
     <footer>
         Made with love by Jhermaine. 💌
     </footer>
 
-    <!-- Scripts go here, just before the closing body tag -->
-    <!-- Load libraries first -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.2.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder@1.3.3"></script>
     <script src="https://unpkg.com/compromise"></script>
-    <script src="https://unpkg.com/touch-events@1.0.4/dist/touch-events.umd.min.js"></script> <!-- Check if still needed with modern touch support -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuidv4.min.js"></script>
-
-    <!-- Load your custom scripts after libraries -->
-    <script src="poem-scoring.js"></script> <!-- Depends on TFJS, USE, Compromise -->
-    <script src="hana-bot.js"></script>     <!-- Depends on #hanaBubble, #hanaText, maybe showSection -->
-    <script src="poem-manager.js"></script>  <!-- Depends on poem-scoring.js, #poemForm, etc. -->
-
-    <!-- Inline scripts that use functions from external files go last -->
-    <script>
+    <script src="https://unpkg.com/touch-events@1.0.4/dist/touch-events.umd.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuidv4.min.js"></script> <script src="poem-scoring.js"></script> <script src="hana-bot.js"></script>     <script src="poem-manager.js"></script>  <script>
         // Function to show/hide sections - could be in a separate UI script
         function showSection(id) {
-            // Consider toggling a CSS class instead of directly setting display
-            document.querySelectorAll(".section").forEach(s => s.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
+            const sections = document.querySelectorAll(".section");
+            sections.forEach(s => s.classList.add('hidden'));
+            const activeSection = document.getElementById(id);
+            if (activeSection) {
+                 activeSection.classList.remove('hidden');
+            } else {
+                console.error(`Section with id "${id}" not found.`);
+                // Optionally redirect to home or show an error message
+                const homeSection = document.getElementById('home');
+                if(homeSection) homeSection.classList.remove('hidden');
+            }
         }
 
-        // Initial section display on DOM ready
-        // Use DOMContentLoaded which fires earlier than load
+        // Initial setup on DOM ready
         document.addEventListener('DOMContentLoaded', () => {
-             showSection('home'); // Show home section initially
+            // Handle navigation clicks using event listeners
+            document.querySelectorAll('nav a[data-section]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent default link behavior
+                    const sectionId = link.getAttribute('data-section');
+                    showSection(sectionId);
+                });
+            });
 
-             // Call initial setup functions from poem-manager.js and hana-bot.js
-             // if they are exposed globally or via a module pattern
-             // Assuming poem-manager.js exposes loadPoems and setupPoemForm globally
-             if (typeof loadPoems === 'function') {
-                 loadPoems();
-             } else {
+            // Show home section initially
+             showSection('home');
+
+            // Call initial setup functions from poem-manager.js and hana-bot.js
+            // Ensure these functions are globally accessible (e.g., attached to `window`)
+            if (typeof loadPoems === 'function') {
+                 loadPoems(); // Load poems when the DOM is ready
+            } else {
                  console.error("loadPoems function not found. Check poem-manager.js loading and scope.");
-             }
+            }
 
-             if (typeof setupPoemForm === 'function') {
-                 setupPoemForm();
-             } else {
+            if (typeof setupPoemForm === 'function') {
+                 setupPoemForm(); // Set up the form submission handler
+            } else {
                  console.error("setupPoemForm function not found. Check poem-manager.js loading and scope.");
-             }
+            }
 
-             // If hana-bot.js needs initial setup, call it here too
-             // e.g., if (typeof setupHanaBot === 'function') { setupHanaBot(); }
-             // The DOMContentLoaded listener in hana-bot.js handles finding elements.
+             // If hana-bot.js needs initial setup (e.g., positioning, initial message), call it here
+             // Assuming hana-bot.js handles its own DOMContentLoaded listener for finding elements
+             // If it has a global init function like setupHanaBot, call it:
+             // if (typeof setupHanaBot === 'function') { setupHanaBot(); }
         });
-
-        // Removed the window.onload listener as DOMContentLoaded is generally preferred
-
-        // Removed the duplicate window.addEventListener('load') block
     </script>
-
-    <!-- CSS for the .hidden class -->
-    <style>
-        .hidden {
-            display: none;
-        }
-
-        .poem-card-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            /* Add more styling as needed */
-        }
-
-        /* Other styles */
-
-        .carousel {
-        display: flex;
-        overflow-x: auto;
-        gap: 15px;
-        padding-bottom: 15px;
-        }
-
-        .poem-card {
-        border: 1px solid #ddd;
-        padding: 10px;
-        }
-    </style>
-
 </body>
 </html>
